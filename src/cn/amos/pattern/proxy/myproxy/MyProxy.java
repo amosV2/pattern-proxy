@@ -40,25 +40,28 @@ public class MyProxy {
 			for(Method m:methods){
 //				m.getClass().getMethod("sing",c);
 				StringBuffer paramList = new StringBuffer();//参数表
-				StringBuffer paramTypes = new StringBuffer();//参数名
+				StringBuffer paramNames = new StringBuffer();//参数名
+				StringBuffer paramTypes = new StringBuffer();//参数类型
 				Class<?> returnType = m.getReturnType();
 				Class<?>[] parameterTypes = m.getParameterTypes();
 				for(int j=0;j<parameterTypes.length;j++){
 					Class<?> t = parameterTypes[j];
 					String paramType = t.getName();
+					paramTypes.append(paramType + ".class");
 					String paramName = "arg" + j;
-					paramTypes.append(paramName);
+					paramNames.append(paramName);
 					paramList.append(paramType + " " + paramName);
 					if (j > 0 && j < parameterTypes.length - 1) {
 						paramList.append(",");
+						paramNames.append(",");
 						paramTypes.append(",");
 					}
 				}
 
-				sb.append("public " + returnType.getName() + m.getParameterTypes() + "(" + paramList.toString() + ") {" + ln);
+				sb.append("public " + returnType.getName() + m.getName() + "(" + paramList.toString() + ") {" + ln);
 					sb.append("try{" + ln);
-						sb.append("Method method = " + c.getName() + ".class.getMethod(" + m.getName() + ",new Class[]{"+ paramTypes.toString() +"}" + ")" + ln);
-						sb.append("this.h.invoke()");
+						sb.append("Method method = " + c.getName() + ".class.getMethod(" + m.getName() + ",new Class[]{"+ paramTypes.toString() +"}" + ");" + ln);
+						sb.append("return"+"this.h.invoke(this,method,new Object[]{"+ paramNames.toString() +"}" +");" + ln);
 					sb.append("} catch (RuntimeException | Error var2) {" + ln);
 							sb.append("throw var2;" + ln);
 						sb.append("} catch (Throwable var3) {" + ln);

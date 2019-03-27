@@ -17,7 +17,8 @@ public class DynamicProxyTest {
 		Player lin = (Player) proxy.getInstance(new Lin());
 		System.out.println(lin.getClass());
 		byte[] bytes = ProxyGenerator.generateProxyClass("$Proxy0", new Class<?>[] {Player.class});
-		FileOutputStream fos = new FileOutputStream("F:\\Desktop\\$Proxy0.class");
+//		FileOutputStream fos = new FileOutputStream("F:\\Desktop\\$Proxy0.class");
+		FileOutputStream fos = new FileOutputStream("F:\\Users\\Desktop\\$Proxy0.class");
 		fos.write(bytes);
 		fos.close();
 		lin.sign();
